@@ -99,8 +99,11 @@ def create_new_snapshot(scheduled_snapshot):
             'name': pvc_name
         }
     else:
-        volume_snapshot_body['spec']['source'] = {
-            'persistentVolumeClaimName': pvc_name
+        volume_snapshot_body['spec'] = {
+            'volumeSnapshotClassName': scheduled_snapshot.get('spec', {}).get('snapshotClassName'),
+            'source': {
+                'persistentVolumeClaimName': pvc_name
+            }
         }
     try:
         custom_api.create_namespaced_custom_object(
