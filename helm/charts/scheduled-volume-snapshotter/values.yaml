@@ -3,6 +3,7 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+startingDeadlineSeconds: 120
 nameOverride: ""
 
 schedule: "*/15 * * * *"

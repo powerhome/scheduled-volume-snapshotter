@@ -7,7 +7,7 @@ metadata:
 spec:
   schedule: "{{ .Values.schedule }}"
   concurrencyPolicy: Forbid
-  startingDeadlineSeconds: 120
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
   jobTemplate:
     spec:
       template:
