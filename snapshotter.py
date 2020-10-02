@@ -72,8 +72,15 @@ def new_snapshot_needed(scheduled_snapshot, existing_snapshots):
 
 
 def create_new_snapshot(scheduled_snapshot):
+    snap_labels = scheduled_snapshot.get('spec', {}).get('snapshotLabels', {})
+
+    pvc_suffix = ''
+    if 'suffix' in snap_labels:
+        _pvc_suffix = scheduled_snapshot.get('spec').get('snapshotLabels').get('suffix')
+        pvc_suffix = '-{}'.format(_pvc_suffix)
+
     pvc_name = scheduled_snapshot.get('spec', {}).get('persistentVolumeClaimName')
-    new_snapshot_name = f'{pvc_name}-{str(int(time.time()))}'
+    new_snapshot_name = f'{pvc_name}{pvc_suffix}-{str(int(time.time()))}'
     new_snapshot_namespace = scheduled_snapshot.get('metadata', {}).get('namespace')
     new_snapshot_labels = {
         **scheduled_snapshot.get('spec', {}).get('snapshotLabels', {}),
